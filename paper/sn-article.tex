@@ -1,0 +1,584 @@
+% Version 3.1 December 2024
+% See section 11 of the User Manual for version history
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Please do not use \input{...} to include other tex files. %%
+%% Submit your LaTeX manuscript as one .tex document. %%
+%% All additional figures and files should be attached separately. %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[pdflatex,sn-mathphys-num,iicol]{sn-jnl} % Two-column layout for The Visual Computer
+
+%% Journal Metadata (for published version simulation; remove for submission)
+
+
+%% Standard Packages
+\usepackage{graphicx}          % For images, essential for graphics journal
+\usepackage{subcaption}        % For subfigures, common in visual papers
+\usepackage{multirow}          % For complex tables
+\usepackage{amsmath,amssymb,amsfonts} % Math support
+\usepackage{amsthm}            % Theorem environments
+\usepackage{mathrsfs}          % Calligraphic math
+\usepackage[title]{appendix}   % Appendices
+\usepackage{xcolor}            % Colors (if needed for graphics)
+\usepackage{textcomp}          % Text symbols
+\usepackage{manyfoot}          % Multiple footnotes
+\usepackage{booktabs}          % Professional tables
+\usepackage{algorithm}         % Algorithms, useful for computer vision papers
+\usepackage{algorithmicx}      % Algorithm formatting
+\usepackage{algpseudocode}     % Pseudocode
+\usepackage{listings}          % Code listings
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\renewcommand\tabularxcolumn[1]{m{#1}} % vertical centering in X columns
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\extrarowheight}{2pt}
+
+%% Theorem styles
+\theoremstyle{thmstyleone}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{thmstyletwo}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\theoremstyle{thmstylethree}
+\newtheorem{definition}{Definition}
+\setlength{\parindent}{0pt}
+\usepackage{graphicx}
+\usepackage{subfig} 
+
+\raggedbottom
+
+\begin{document}
+
+% --- TITLE ---
+\title[Short Title]{A Convolutional Neural Network Approach for Real-Time Tomato Disease Classification on a Mobile Robotic Platform}
+
+% --- AUTHORS & AFFILIATIONS ---
+
+
+\abstract{Agriculture is the backbone of food supply all around the globe, but still, the yield of crops is put at risk by plant diseases very often. Early and precise detection are key factors, but manual inspection, as a traditional method, is tiring, takes a lot of man-hours, and is often impracticable for large-scale farms. Modern solutions using drones, on the other hand, still radiate their high cost as a significant barrier to many farmers. To fix the issues, an intelligent and autonomous agricultural rover was developed that can promptly detect tomato leaf infections. 
+The setup consists of a fairly priced rover base, controlled by a Raspberry Pi 5, and a high-definition Raspberry Pi Camera Module 2 for capturing images. Three lightweight Convolutional Neural Network (CNN) architectures, namely MobileNetV2, ResNet18, and EfficientNetB0, were trained and tested in order to get the best compromise between accuracy and computational efficiency for on-device deployment. Our experiments resulted in a very clear performance ranking among the models. EfficientNetB0 achieved the highest test accuracy of 99.73\%, which was very much ahead of ResNet18 (98.13\%) and MobileNetV2 (96.35\%) in comparison. Based on its exceptional accuracy and effectiveness, EfficientNetB0 was uploaded onto the rover, which subsequently gave it the capability to navigate through the crop rows and detect the signs of diseases in real-time.}
+
+\keywords{Smart Agriculture, Plant Disease Detection, Deep Learning, Autonomous Rover, Convolutional Neural Network (CNN), EfficientNetB0}
+
+\maketitle
+
+\section{Introduction}\label{sec1}
+Farmers are the back bone of INDIA but they face numerous challenges. Food security is a critical global concern, but we don’t have that much of production for our population. So, the demand for food is keep on increasing day by day. We are losing crops due to various diseases \cite{1}. Finding the Diseased plant as soon as possible is very important to us. Finding diseased plant, recover field experience and knowledge about it. Even, sometimes the skilled professionals also make mistakes, due to that heavy losses were faced by farmers and manually verifying will consume time a lot and climate changes further increases the risk of plant disease \cite{2}. Therefore, this work proposes an autonomous rover to address these issues \cite{3}. It will be very efficient for farmers and return of investments is also good \cite{4}.
+
+Smart agriculture systems rely on automatic plant disease detection which enhances more productivity and maintenance of agriculture. The use of Machine Learning(ML) and Deep Learning(DL) provides promising results due to its accuracy of identifying plant disease from digital images \cite{5}. Traditional Machine Learning(ML) Techniques have been widely used in the field of plant detection system, these methods classify features from images, such as colour, texture and shape to train the models. Various Deep Learning(DL) based techniques came for plant disease detection \cite{6}. DL model can handle high resolution images and it can handle complex things. DL techniques such as convolutional neural networks (CNNs) has been proposed for plant disease detection. CNNs is much more better than traditional ML models such as Random Forest(RM) and support vector machines(SVM)\cite{7}.
+
+Deep CNN models require high computational powers and large memory footprints. Light weight CNN models are built with less number of layers so that it can be a good alternative if they can achieve a good level of precision on plant disease detection \cite{8}. Some light weight CNNs are MobileNet v2, ShuffleNet v2, EfficientNet B0 and GhostNet are some of the lightweight models with promising performance.
+
+Mainly a light weight CNN model (VGG-ICNN) has been proposed for edge computing limitations. So, the solution is to make an internet of things(IoT) device to detect plant disease. However, many existing device’s are static, lack of real-time detection and mainly it doesn’t gives the location of diseased plant to the users in real time \cite{9}. To overcome these limitations, our proposed solution is a smart agriculture rover that integrates a camera with a pre-trained deep learning model to perform real-time plant disease detection.
+
+The rover automatically takes pictures of the Tomato leaves, On that time if diseased leave is detected by the light weight convolutional neural networks (CNNs) it sends alert to the user. There are existing ideas in this field, they are smart phone based detection, fixed IoT device\cite{5}. Disadvantage of smart phone based detection is that the farmer need to take photos manually and check, likewise for static IoT device it will be not usual for large areas and plant disease detection drones are very expensive for average farmers \cite{9}. Thus, the proposed solution is an IoT-based rover that addresses these agricultural challenges.
+
+The contributions are listed as follows:
+
+\begin{itemize}
+    \item Our work presents the design and implementation of a complete, low-cost autonomous rover for agriculture, which integrates a mobile platform, image capture, and on-board processing into a single, functional system.
+
+    \item We successfully deployed a lightweight, high-accuracy deep learning model (EfficientNetB0) on a resource-constrained embedded system (Raspberry Pi 5) for real-time, on-device disease detection, removing the need for an active internet connection in the field.
+
+    \item We carried out a comparative performance evaluation of three different lightweight CNN architectures (EfficientNetB0, ResNet18, and MobileNetV2) in order to scientifically prove the selection of the best model for this particular edge computing application.
+\end{itemize}
+
+The remainder of this paper is organized as follows. We begin with a Related work of existing plant disease detection systems in Section~\ref{sec:2}, focusing on lightweight deep learning models and mobile robotic platforms in agriculture. Section~\ref{sec:3} follows with a detailed description of our proposed autonomous rover, including its hardware architecture, system workflow, and the Deep Learning model. The experimental results, featuring a comparative performance analysis of the different models, are presented in Section~\ref{sec:4}. Finally, Section~\ref{sec:5} concludes the paper and sets the grounds
+ for future work.
+
+\section{Related work}
+\label{sec:2}
+
+Early and accurate identification of plant diseases is essential not only for global food security but also for reducing the impact of disease on the crop market. Presently, visual inspection methods used by either farmers or specialists are the main form of diagnosis; they are slow, biased, and not suitable for large-scale agriculture. Hence, researchers have turned to the application of computer vision and artificial intelligence to set up systems that can detect diseases in an automated and effective manner. This section discusses major contributions in this research area, with a special focus on deep learning algorithms, their use in small devices, and their combination with robot systems for outdoor applications.
+
+\subsection{Deep Learning for Plant Disease Detection}
+
+Deep learning, in particular Convolutional Neural Networks (CNNs), has emerged to be the leading and most reliable technique for the detection of plant diseases. Its success is largely due to its ability to conduct learning hierarchically through images. We have many researches that show the power of different CNN models working with different plant types for disease detection. For instance, Ahmed et al. \cite{10} have demonstrated that deep learning models are capable of classifying diseases in tomato plants with high accuracy after extensive training on large leaf image datasets, which is a finding further supported by the thorough survey and case study of Thuseethan et al. \cite{11}. To mitigate the data scarcity issue often encountered in agriculture, Oni et al. \cite{12} have pointed out that the common technique used is that of transfer learning where a model that has been pre-trained on a large-scale dataset, like ImageNet, is tuned for the specific task of disease detection.
+
+This problem of insufficient data has also led to the common practice of using pre-trained deep learning models along with transfer learning in agricultural applications. Several deep learning architectures have been trialed and compared for this specific application. In various comparative studies, architectures like AlexNet, VGG and ResNet have been regularly used. For instance, the comparative analysis of Agarwal et al. \cite{14} indicates that the architectural approaches, such as VGG16, among others, yield favorable results. The research community has recently started to focus on creating lightweight and efficient models that would be suitable for deployment in resource-constrained environments, as pointed out in the review of Chowdhury et al.\cite{16}. MobileNet and EfficientNet models have gained traction, and  Zhao et al. \cite{17} have done the entire process of recognition has become very efficient and they are very certain about the accuracy as well as the lower computation cost and these models are compared with the ‘heavy’ ones.
+
+Researchers are looking into hybrid approaches to extend performance even more. Wang et al. \cite{18} suggested a combination of different methods in a deep learning model, while Sun et al \cite{19} came up with a hybrid system rooted in an improved algorithm for identifying tomato leaf diseases. Furthermore, advanced methods are being investigated to upgrade model accuracy and robustness. Shoaib et al \cite{20} explored the use of attention mechanisms to improve identification, while  David et al. \cite{21} and Wang et al. \cite{22} investigated the use of Generative Adversarial Networks (GANs) to develop more robust detection systems.
+
+\subsection{Real-time and In-field Disease Detection}
+
+It is very important for models to have high accuracy in laboratory conditions, but the final objective is still to use them for real-time, in-field detection of diseases. This brings forth several problems including changes in lighting, background noise, and the various levels of disease maturity. Different methods have been used by the scientists to tackle these problems. For instance,  Zhang et al. \cite{23} came up with a sturdy, 3D-informed contrastive learning framework for field detection while Archanaa \cite{24} pointed out the need for the use of image pre-processing techniques so as to increase accuracy in different situations.
+
+The use of deep learning models on inexpensive, low-power embedded systems like Raspberry Pi and Jetson Nano has become a major area of research. Srinivas et al.\cite{26} developed and tested deep learning models (CNN and VGG-16) using a combined dataset of Kaggle images and real-time photos captured from a local nursery. They proposed a modified 11-layer CNN model as a promising solution to help farmers monitor tomato plant health, enhance their decision-making at an early stage, and ultimately increase yields.
+
+
+\subsection{Robotic Platforms for Automated Monitoring}
+
+In order to collect data automatically and make it possible to monitor large areas, researchers have started to integrate disease detection systems with robotic platforms such as drones and ground rovers. These autonomous systems can move through the fields, take plant pictures from different angles, and even tell what the disease is at that moment. We are proposing to use a rover, which will allow us to take high-quality images of plant lower parts, which aerial drones may not be able to capture.
+
+The literature confirms the remarkable development in automated plant disease detection. On one hand, the deep learning approaches that are very powerful and effective have been devised; meanwhile, there is still a lack of studies that focus on the low-cost hardware deployment, integration into robots, and practical application in the field.
+
+Table~\ref{tab:related_works} presents a comparative overview of existing approaches proposed for tomato leaf disease detection
+
+\clearpage               % flush earlier floats and start a fresh page
+
+\begin{table*}[!p]      % put float on a dedicated float page
+\centering
+\caption{Summary of Related Works on Tomato Leaf Disease Detection}
+\label{tab:related_works}
+
+\vspace*{\fill}         % push table to vertical center of the float page (optional)
+
+\begin{tabularx}{\textwidth}{c Y Y Y c}
+\toprule
+\textbf{S.No} & \textbf{Author} & \textbf{Model / Approach} & \textbf{Dataset} & \textbf{Performance (\%)} \\
+\midrule
+1  & Ahmed et al.\cite{10} & MobileNetV2 & PlantVillage & 99.30 \\
+2  & Thuseethan et al.\cite{11} & Lightweight Siamese NN & PlantVillage + Taiwan & 96.97 \\
+3  & Oni and Prama\cite{12}  & Optimized Custom CNN & Bangladesh dataset & 95.20 \\
+4  & Agarwal et al.\cite{14} & Custom 3-layer CNN  & 10 classes (1 healthy) & 91.20 \\
+5  & Karothia and Chat-
+topadhyay\cite{15} & DenseNet & PlantVillage (TLDD) & 99.64 \\
+6  & Chowdhury et al.\cite{16} & InceptionV3 & Multi-class PlantVillage & 99.2 \\
+7  & Zhao et al.\cite{17} & ECA-ResNet & Tomato dataset & 99.24 \\
+8  & Wang et al\cite{18} & Optimized Hybrid CNN & PlantVillage (Tomato subset) & 92.3(mAP) \\
+9 & Sun et al.\cite{19} & E-TomatoDet & PlantVillage Tomato Dataset & 97.2(mAP) \\
+10 & Shoaib et al.\cite{20} & U-Net + CNN  & PlantVillage Tomato Dataset & 98.66 \\
+11 & David et al.\cite{21} & Hybrid CNN-RNN & PlantVillage (Tomato) & 96.40 \\
+12 & Wang et al.\cite{22}  & Multi-scale attention CNN & PlantVillage (Tomato) & 93.8(mAP) \\
+13 & Zhang et al.\cite{23} & LDAMNet & PlantVillage Tomato Dataset & 98.71 \\
+14 & Archanaa et al.\cite{24} & CNN  & Tomato / PlantVillage & 96.88 \\
+15 & Srinivas et al.\cite{26} & VGG-16 & Kaggle & 99.43 \\
+\bottomrule
+\end{tabularx}
+
+\vspace*{\fill}
+
+\end{table*}
+
+\clearpage  
+
+
+
+\section{Proposed Work}
+\label{sec:3}
+
+This paper presents a completely self-sufficient rover-based system for the instant recognition of diseases in tomato plants. The primary components of our system are a mobile rover that houses an embedded processing unit, a high-resolution camera, and a lightweight deep learning model. The aim is to automate the entire crop monitoring process, hence facilitating the very early detection of diseases without the intervention of humans. The system is intended to be an economical and feasible solution for the farmers, which will give them real-time and actionable alerts.
+
+\subsection{System Architecture}
+The CPU is the key component of the entire hardware architecture and controls all the peripherals as well as doing the computing. This also makes the system portable, independent, and not requiring a constant connection to outside computing resources for functioning. 
+The key components are as follows:
+\begin{itemize}
+    \item Processing Unit: Processing Unit: A Raspberry Pi 5 is the brain of the rover This single-board computer handles the running of a light Linux-based operating system, the execution of the detection script written in Python, the processing of the real-time video feed, and the management of all system tasks. All these are made possible through its powerful processor, which enables the deployment of deep learning models at the edge with high efficiency.
+
+    \item Image Acquisition: The very first thing done was to set up a Raspberry Pi Camera Module 2 for the continuous capturing of tomato plants in high definition video streaming. This camera is connected to the Raspberry Pi via the dedicated MIPI CSI interface which allows super-fast data transfer to the chip with virtually no waiting time thereby supplying the visual data the model needs for classification to be done.
+
+    Figure~\ref{fig:prototype_front}-~\ref{fig:prototype_side} shows the assembled prototype of the smart agricultural rover.
+\end{itemize}
+
+
+\begin{figure}[htbp]
+    \centering
+
+    % --- Subfigure (a): Front View ---
+    \begin{subfigure}{\columnwidth} % Adjust width as needed, e.g., 0.85\columnwidth
+        \centering
+        \includegraphics[width=0.85\columnwidth]{Frontview.jpg}
+        \caption{Front view.}
+        \label{fig:prototype_front}
+    \end{subfigure}
+
+    \vspace{1em} % Optional vertical space between subfigures
+
+    % --- Subfigure (b): Side View ---
+    \begin{subfigure}{\columnwidth} % Adjust width as needed, e.g., 0.85\columnwidth
+        \centering
+        \includegraphics[width=0.85\columnwidth]{Sideview.jpg}
+        \caption{Side view.}
+        \label{fig:prototype_side}
+    \end{subfigure}
+
+    % --- Main Figure Caption ---
+    \caption{Prototype of the developed system.}
+    \label{fig:prototype}
+\end{figure}
+
+\subsection{Deep Learning Pipeline}
+
+The software element is centered around the creation of a highly efficient and accurate disease classification model, as well as its deployment.
+
+
+MobileNetV2, ResNet18, and EfficientNetB0, which are three lightweight CNN architectures, were absolutely tested in-depth. Eventually, EfficientNetB0 was the winner of the hills because its amazing combination of low computational cost and high accuracy was a key requirement for real-time inference on a resource-limited device like Raspberry Pi 5, which is not so powerful in terms of resources.
+
+\clearpage                % flush earlier floats and start a fresh page
+
+\begin{figure*}[!p]      % request a dedicated float page spanning both columns
+\centering
+\vspace*{\fill}          % center vertically on the float page (optional)
+
+% ---------------- Figure 3 (top) ----------------
+\begin{minipage}{0.95\textwidth}
+  \centering
+  \includegraphics[width=5\textwidth,height=0.58\textheight,keepaspectratio]{Architecture_cropped.pdf}%
+  \captionsetup{type=figure}%
+  \caption{Proposed model architecture for tomato leaf disease detection.}%
+  \label{fig:model_architecture}%
+\end{minipage}
+
+\vspace{1.5em}  % vertical gap between figures (adjust as needed)
+
+% ---------------- Figure 4 (bottom) ----------------
+\begin{minipage}{0.95\textwidth}
+  \centering
+  \includegraphics[width=0.95\textwidth,height=0.42\textheight,keepaspectratio]{image1.jpeg}%
+  \captionsetup{type=figure}%
+  \caption{Workflow of the proposed work.}%
+  \label{fig:workflow_proposed}%
+\end{minipage}
+
+\vspace*{\fill}          % center vertically on the float page (optional)
+\end{figure*}
+
+\clearpage       
+
+
+EfficientNetB0 is one of the very best convolutional neural networks at present, and it scales the network according to the compound scaling method which is a principled one. It is built on the Mobile Inverted Bottleneck Convolution (MBConv) design where the Squeeze-and-Excitation (SE) module is integrated to boost the performance. The SE module, in its function, works as a light attention mechanism and so it is possible for the network to give priority to the features that carry more information. 
+
+A transfer learning approach was utilized, where the EfficientNetB0 model pre-trained on the ImageNet dataset was used as a very strong feature extractor. The last fully connected layer was then changed with a new one that was specifically designed to classify the different classes in our tomato disease dataset.
+
+Figure~\ref{fig:model_architecture}: Overall architecture of the proposed EfficientNetB0 model for tomato leaf disease classification.
+
+\subsection{Operational Workflow}
+
+The end-to-end operational workflow of the system is designed for full autonomy and is depicted in Figure~\ref{fig:workflow_proposed}. The process is as follows:
+
+\begin{itemize}
+    \item Navigation and Capture: The rover is launched into a tomato plantation where it starts to move between the rows of the crops. The Raspberry Pi Camera Module captures the Tomato leaves’ real-time video feed non-stop.
+    
+    \item Real-Time Inference: The real-time video feed’s every frame undergoes pre-processing and is then fed into the deployed EfficientNetB0 model that is powered by Raspberry Pi 5.
+
+    \item Classification and Alert: The model makes a classification of leaves for each frame on the basis of their health status. If any illness is detected with a certainty level exceeding the set limit, an alert is activated by the system. Alongside the picture of the affected leaf and the guessed disease, a message is sent to the user instantly through the Telegram bot.
+\end{itemize}
+
+\section{Experimental results}
+\label{sec:4}
+
+\subsection{Dataset Details}
+
+The PlantVillage dataset which is publicly available served as the data source for training and evaluating the proposed deep learning models. This dataset mainly consisted of annotated pictures of plant leaves for different types of tomato leaf disease's. It contains 16,012 tomato leaf pictures, consisting of ten classes, nine for the common tomato leaf diseases and one for healthy leaves.
+
+To allow the model to generalize in practice better, another new background class with 902 images was added. A total of 8 non-leaf or irrelevant background images were used in the experiment; this aimed at distinguishing between genuine tomato leaves and other disregarded materials. The full class distribution can be seen in Table~\ref{tab:dataset_details}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Breakdown of the PlantVillage Tomato Dataset}
+\label{tab:dataset_details}
+% Use @{\hspace{1em}} to set a smaller space between columns
+\begin{tabular}{@{} r @{\hspace{1em}} l @{\hspace{1em}} r @{}}
+\toprule
+\textbf{S.No} & \textbf{Class Name} & \textbf{No. of Images} \\
+\midrule
+1  & Tomato Yellow Leaf Curl Virus & 3209 \\
+2  & Tomato Bacterial Spot         & 2127 \\
+3  & Tomato Target Spot            & 1404 \\
+4  & Tomato Two Spotted Spider Mites & 1676 \\
+5  & Tomato Septoria Leaf          & 1771 \\
+6  & Tomato Healthy                & 1591 \\
+7  & Tomato Early Blight           & 1000 \\
+8  & Tomato Late Blight            & 1909 \\
+9  & Tomato Leaf Mold              &  952 \\
+10 & Tomato Mosaic Virus           &  373 \\
+11 & Background Class              &  902 \\
+\midrule
+\multicolumn{2}{@{}r}{\textbf{Total:}} & \textbf{16914} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Representative sample images drawn from the PlantVillage subset (showing examples of each class and the added background class) are provided in Figure~\ref{fig:dataset_samples}; these samples are taken from the PlantVillage collection [28]. The inter-class correlation matrix computed over the dataset features is presented in Figure~\ref{fig:correlation_matrix}, illustrating relationships and potential confusions among classes derived from the PlantVillage dataset.
+
+
+\clearpage
+\begin{figure*}[!p]
+  \centering
+  % Configure subfigure caption appearance (centered)
+  \captionsetup[subfloat]{labelformat=simple, labelsep=space, justification=centering, singlelinecheck=true}
+  \renewcommand{\thesubfigure}{(\alph{subfigure})} % use (a), (b), ...
+  \small % optional: reduce overall size slightly so everything fits
+
+  \begin{tabular}{@{}c@{\hspace{1.5em}}c@{\hspace{1.5em}}c@{}}
+    \subfloat[Target Spot]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Target_Spot (1).JPG}}\label{fig:s1}} &
+    \subfloat[Mosaic Virus]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Mosaic_virus (1).JPG}}\label{fig:s2}} &
+    \subfloat[Yellow Leaf Curl]{\includegraphics[width=0.28\textwidth,keepaspectratio]{yellow_leaf_curl.JPG}}\label{fig:s3}} \\[0.9em]
+
+    \subfloat[Bacterial Spot]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Bacterial_spot (1).JPG}}\label{fig:s4}} &
+    \subfloat[Early Blight]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Early_blight (1).JPG}}\label{fig:s5}} &
+    \subfloat[Late Blight]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Late_blight (1).JPG}}\label{fig:s6}} \\[0.9em]
+
+    \subfloat[Leaf Mold]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Leaf_Mold (1).JPG}}\label{fig:s7}} &
+    \subfloat[Spectoria Leaf Spot]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Spectoria_leaf_spot (1).JPG}}\label{fig:s8}} &
+    \subfloat[Two Spotted Spider Mites]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Two_spotted_spider_mites (1).JPG}}\label{fig:s9}} \\[0.9em]
+
+    % final row: center two images
+    \multicolumn{3}{c}{%
+      \subfloat[Healthy]{\includegraphics[width=0.28\textwidth,keepaspectratio]{Healthy (1).JPG}}\label{fig:s10}} \hspace{2em}%
+      \subfloat[Background]{\includegraphics[width=0.28\textwidth,keepaspectratio]{IMG-20251012-WA0008.jpg}}\label{fig:s11}}%
+    }
+  \end{tabular}
+
+  \caption{Representative sample images from the PlantVillage tomato subset (including the added background class).}
+  \label{fig:dataset_samples}
+\end{figure*}
+\clearpage
+
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\columnwidth]{correlation_matrix.png} % <-- replace with your filename
+\caption{Normalized correlation matrix showing clas-
+sification performance across the dataset.}
+\label{fig:correlation_matrix}
+\end{figure}
+
+\subsection{Experimental Setup}
+
+The models are trained in was trained in Google Colab (free version) using a GPU backend with 12.7GB system RAM,15GB GPU memory (NVIDIATeslaT4), and 112 GB disk space.
+
+\subsection{Model Performance Comparison}
+
+In order to determine the most efficient model that could be deployed on the rover, three lightweight CNN architectures, namely MobileNetV2, ResNet18, and EfficientNetB0, were trained on the PlantVillage tomato subset (with the background class included) under the same conditions.
+
+Table~\ref{tab:model_comparison} lists the accuracy of the models tested and compared with recent papers as a basis for their performance comparison. EfficientNetB0 was the highest-scoring model among the contestants, but it still managed to keep the computational resource usage low, thus being the most reasonable option for robotic edge deployment in real-time applications.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Model Performance Comparison}
+\label{tab:model_comparison}
+\begin{tabular}{@{} l c @{}} 
+\toprule
+\textbf{Model Name} & \textbf{Test Accuracy (\%)} \\ 
+\midrule
+\textbf{EfficientNetB0} & \textbf{99.73} \\
+DenseNet\cite{15}              & 99.64 \\
+VGG-16\cite{26}              & 99.43 \\
+MobileNetV2\cite{10}             & 99.30 \\
+ResNet18                    & 98.13 \\
+MobileNetV2                 & 96.35 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Detailed Performance Metrics}
+
+The chosen hyperparameters for the best-performing model, EfficientNetB0, are summarized in Table~\ref{tab:hyperparameters}. All models were trained using the same experimental conditions for a fair comparison.
+
+In addition to test accuracy, the model's evaluation was done through precision, recall and F1-score, thus giving a more thorough analysis in a multi-class scenario. Table~\ref{tab:test_metrics} presents the weighted average of these metrics for the EfficientNetB0 model indicating very good agreement among all classes. High recall and F1-scores were obtained by the model, which validated its trustworthiness in telling apart different tomato leaf diseases.
+
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Hyperparameters of the leaf detection model}
+\label{tab:hyperparameters}
+\begin{tabular}{p{0.55\columnwidth} p{0.30\columnwidth}} 
+\toprule
+\textbf{Hyperparameters} & \textbf{Value} \\
+\midrule
+Learning rate      & 0.001 \\
+Weight Decay       & 0.0001 \\
+Optimizer          & AdamW \\
+Epochs             & 15 \\
+Dropout rate       & 0.2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Detailed Test Metrics for EfficientNetB0}
+\label{tab:test_metrics}
+\begin{tabular}{@{} l c @{}} 
+\toprule
+\textbf{Metric} & \textbf{Weighted Avg. Score} \\ 
+\midrule
+Precision          & 0.9973 \\
+Recall             & 0.9973 \\
+F1-Score           & 0.9973 \\
+Epochs             & 15 \\
+No. of parameters  & 5.3 million \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Training and Validation Performance}
+
+To check how the EfficientNetB0 model learned, we plotted the training and validation accuracy and loss for all 30 epochs. These graphs helps us see if the model is overfitting or not.
+
+The figure~\ref{fig:loss_epoch}-~\ref{fig:accuracy_epoch} shows the accuracy and loss curves. The validation accuracy (orange line) starts off pretty high around 98\% but takes a weird dip at epoch 5, it recovers quick though and consistently stays above the training accuracy. The end result for validation accuracy is almost 99.8\%, which is great. The validation loss has a big spike at epoch 5 which matches the dip in accuracy, but after that it drops and stays very low, even lower than the training loss. This shows that the model generalizes really good on the validation data and the dropout and data augmentation we used helped prevent overfitting.
+
+% ---------------- Figure 7 ----------------
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\columnwidth]{Loss vs epoch.png}  % <-- replace with your file name
+\caption{Training and validation loss vs epoch for the proposed EfficientNetB0 model.}
+\label{fig:loss_epoch}
+\end{figure}
+
+% ---------------- Figure 8 ----------------
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\columnwidth]{Accuracy vs epoch.png}  % <-- replace with your file name
+\caption{Training and validation accuracy vs epoch for the proposed EfficientNetB0 model.}
+\label{fig:accuracy_epoch}
+\end{figure}
+
+
+\subsection{Field Testing}
+
+To validate the system in real-world agricultural conditions, the rover was manually operated in an outdoor tomato field. During this field test, the camera captured leaf images under varying lighting and background conditions, and the on-board EfficientNetB0 model performed real-time classification directly on the Raspberry Pi 5.
+
+Figure~\ref{fig:field_test} shows the rover during field testing, detecting diseased leaves in real-time before transmitting the results through the Telegram interface.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Field Testing.jpg}
+    \caption{Field testing of the rover detecting tomato leaf disease.}
+    \label{fig:field_test}
+\end{figure}
+
+\subsection{Telegram Image Evaluation}
+For validation of the model under real-world conditions, images taken in the field through the rover's camera were transferred to a Telegram-based interface that was linked to the model already trained. The classification outputs were provided instantly by the system through a real-time application of the Telegram bot for processing the images.
+
+The model showed high accuracy and stable predictions even with different lighting, shadow, and background conditions, confirming its robustness in practical deployment. Figure~\ref{fig:telegram_results} gives us example of the Telegram test image, thus depicting the end-to-end working of the proposed system in live operational environments.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\columnwidth]{Telegram_test.jpg}  % <-- replace with your filename
+\caption{Sample output from the integrated Telegram bot showing real-time tomato leaf disease detection results.}
+\label{fig:telegram_results}
+\end{figure}
+
+
+\section{Conclusion}
+\label{sec:5}
+
+This work presents an efficient deep learning–based system for tomato leaf disease detection using the EfficientNetB0 model. The proposed model achieved an impressive accuracy of 99.73\%, outperforming other lightweight CNN architectures such as MobileNetV2 and ResNet18. The addition of a background class improved real-world robustness by reducing false classifications. The model’s integration with a Telegram bot and rover platform enabled real-time field implementation. Overall, the system provides a lightweight, accurate, and deployable solution for intelligent crop disease monitoring. The system can be integrated with GPS for precise geolocation mapping in future.
+
+\begin{thebibliography}{99}
+% --- original 30 (r1..r30) ---
+
+\bibitem{1} P. Sajitha, A. Diana Andrushia, N. Anand, M.Z. Naser,
+A review on machine learning and deep learning image-based plant disease classification for industrial farming systems,
+Journal of Industrial Information Integration,
+Volume 38,
+2024,
+100572,
+ISSN 2452-414X,
+\url{https://doi.org/10.1016/j.jii.2024.100572}
+
+
+\bibitem{2} Hosseini SA, Anvari Z (2024) Application of new information technologies in plant pathology. Plant Pathology Science 13(1):135–148. 
+
+
+\bibitem{3} A. Naseer, M. Shmoon, T. Shakeel, S. Ur Rehman, A. Ahmad and V. Gruhn, "A Systematic Literature Review of the IoT in Agriculture—Global Adoption, Innovations, Security, and Privacy Challenges," in IEEE Access, vol. 12, pp. 60986-61021, 2024.
+\url{https://doi.org/10.1109/ACCESS.2024.3394617}
+
+\bibitem{4} T. Thilagavathi, L. Arockiam, & I. Priya Stella Mary. (2024). A Smart Agriculture: A Comprehensive Survey on IoT-Enabled Plant Disease Detection and Agricultural Automation. International Journal of Information Technology, Research and Applications, 3(2), 39–47. \url{https://doi.org/10.59461/ijitra.v3i2.107}
+
+
+\bibitem{5}Romiyal George, Selvarajah Thuseethan, Roshan G. Ragel, Kayathiri Mahendrakumaran, Sivaraj Nimishan, Chathrie Wimalasooriya, Mamoun Alazab,
+Past, present and future of deep plant leaf disease recognition: A survey,
+Computers and Electronics in Agriculture,
+Volume 234,
+2025,
+110128,
+ISSN 0168-1699. \url{https://doi.org/10.1016/j.compag.2025.110128}
+
+\bibitem{6} Sinamenye, J.H., Chatterjee, A. & Shrestha, R. Potato plant disease detection: leveraging hybrid deep learning models. BMC Plant Biol 25, 647 (2025). \url{https://doi.org/10.1186/s12870-025-06679-4}
+
+\bibitem{7} Mohammad Zeeshan, Maryam Shojaei Baghini, Ankur Pandey,
+EdgePlantNet: Lightweight edge-aware cyber–physical system for plant disease detection using enhanced attention CNNs,
+Pervasive and Mobile Computing,
+Volume 110,
+2025,
+102059,
+ISSN 1574-1192. \url{https://doi.org/10.1016/j.pmcj.2025.102059}
+
+
+\bibitem{8} P. E. Correa da Silva and J. Almeida, "An Edge Computing-Based Solution for Real-Time Leaf Disease Classification Using Thermal Imaging," in IEEE Geoscience and Remote Sensing Letters, vol. 22, pp. 1-5, 2025, Art no. 7000105.\url{https://doi.org/10.1109/LGRS.2024.3456637}
+
+
+
+\bibitem{9} KB Pun, Harshi Katiyar, Sriparna Midde, Mouli Paul, Vigneshwaran K, Sugavaneshwaran Kannan, V Ajay Desouza, Jyoti Nughal, Salini Das, Utpal Kumar Bhattacharyya and Anurag Yadav. Artificial intelligence and drone-assisted plant disease diagnosis: A review of advancements and challenges. Int. J. Adv. Biochem. Res. 2025;9(3):358-366. \url{https://doi.org/10.33545/26174693.2025.v9.i3e.3959}
+
+
+
+% --- References from the table ---
+\bibitem{10} S. Ahmed, M. B. Hasan, T. Ahmed, M. R. K. Sony and M. H. Kabir, "Less is More: Lighter and Faster Deep Neural Architecture for Tomato Leaf Disease Classification," in IEEE Access, vol. 10, pp. 68868-68884, 2022.\url{https://doi.org/10.1109/ACCESS.2022.3187203}
+
+\bibitem{11} Thuseethan, S.; Vigneshwaran, P.; Charles, J.; Wimalasooriya, C. Siamese Network-Based Lightweight Framework for Tomato Leaf Disease Recognition. Computers 2024, 13, 323. \url{https://doi.org/10.3390/computers13120323}
+
+\bibitem{12} Oni MK, Prama TT (2023) Optimized Custom CNN for Real-Time Tomato Leaf Disease
+Detection. arXiv preprint arXiv:2302.10521.
+ \url{https://doi.org/10.48550/arXiv.2502.18521}
+
+%\bibitem{13} Ali AA et al (2021) Tomato Leaf Diseases Detection Using Deep Learning. In: Data Science and Intelligent Systems (CoMeSySo 2021), pp 199--208. \url{https://link.springer.com/chapter/10.1007/978-3-030-90321-3_18}
+
+\bibitem{14} Mohit Agarwal, Abhishek Singh, Siddhartha Arjaria, Amit Sinha, Suneet Gupta,
+ToLeD: Tomato Leaf Disease Detection using Convolution Neural Network,
+Procedia Computer Science,
+Volume 167,
+2020,
+Pages 293-301,
+ISSN 1877-0509. \url{https://doi.org/10.1016/j.procs.2020.03.225}
+
+\bibitem{15}Karothia, R., Chattopadhyay MIEEE, M.K. (2022). Vigorous Deep Learning Models for Identifying Tomato Leaf Diseases. In: Saraswat, M., Roy, S., Chowdhury, C., Gandomi, A.H. (eds) Proceedings of International Conference on Data Science and Applications . Lecture Notes in Networks and Systems, vol 288. Springer, Singapore. \url{https://doi.org/10.1007/978-981-16-5120-5_11}
+
+\bibitem{16} Chowdhury MEH et al (2021) Tomato Leaf Diseases Detection Using Deep Learning Technique. In: Technology in Agriculture, IntechOpen. \url{https://doi.org/10.5772/intechopen.97319}
+
+\bibitem{17} Guangyuan Zhao, Baozhen Li, and Xu Huang. 2024. Tomato leaf disease identification based on attention and inception mechanism. In Proceedings of the 2023 6th International Conference on Artificial Intelligence and Pattern Recognition (AIPR '23). Association for Computing Machinery, New York, NY, USA, 557–563.\url{https://doi.org/10.1145/3641584.3641667}
+
+\bibitem{18} Wang, X., Liu, J. An efficient deep learning model for tomato disease detection. Plant Methods 20, 61 (2024).
+\url{https://doi.org/10.1186/s13007-024-01188-1}
+
+\bibitem{19}Sun, H., Fu, R., Wang, X. et al. Efficient deep learning-based tomato leaf disease detection through global and local feature fusion. BMC Plant Biol 25, 311 (2025).
+\url{https://doi.org/10.1186/s12870-025-06247-w}
+
+\bibitem{20} Shoaib M, Hussain T, Shah B, Ullah I, Shah SM, Ali F and Park SH (2022) Deep learning-based segmentation and classification of leaf images for detection of tomato plant disease. Front. Plant Sci. 13:1031748.
+\url{https://doi.org/10.3389/fpls.2022.1031748}
+
+\bibitem{21}Hepzibah Elizabeth David, K. Ramalakshmi, R. Venkatesan, G. Hemalatha. Tomato Leaf Disease Detection Using Hybrid CNN-RNN Model, Pages593 - 597
+\url{https://doi.org/10.3233/APC210108}
+
+\bibitem{22} Wang Y, Zhang P and Tian S (2024) Tomato leaf disease detection based on attention mechanism and multi-scale feature fusion. Front. Plant Sci. 15:1382802.
+\url{https://doi.org/10.3389/fpls.2024.1382802}
+
+\bibitem{23}Zhang E, Zhang N, Li F and Lv C (2024) A lightweight dual-attention network for tomato leaf disease identification. Front. Plant Sci. 15:1420584.
+\url{https://doi.org/10.3389/fpls.2024.1420584}
+
+\bibitem{24}
+Archanaa, N., Daniel, V.V.J., Divya, S., Raja, K., Oviya, I.R. (2024). Tomato Disease Classification Using CNN. In: Somani, A.K., Mundra, A., Gupta, R.K., Bhattacharya, S., Mazumdar, A.P. (eds) Smart Systems: Innovations in Computing. SSIC 2023. Smart Innovation, Systems and Technologies, vol 392. Springer, Singapore.
+\url{https://doi.org/10.1007/978-981-97-3690-4_20}
+
+%\bibitem{25}
+%K. M. Vivek Anandh, A. Sivasubramanian, V. Sowmya, V. Ravi, “Multiclass Classification of Tomato Leaf Diseases Using Convolutional Neural Networks and Transfer Learning,” J. Phytopathol., 2024. doi:10.1111/jph.13423.
+%\url{https://onlinelibrary.wiley.com/doi/10.1111/jph.13423}
+
+%\bibitem{26}
+%V. Thanammal Indu, S. Suja Priyadharsini, “Crossover-based Wind-Driven Optimized Convolutional Neural Network Model for Tomato Leaf Disease Classification,” J. Plant Dis. Prot., vol. 129, pp. 559–578, 2022 (published Oct 2021). doi:10.1007/s41348-021-00528-w.
+%\url{https://ieeexplore.ieee.org/abstract/document/9138030}
+
+\bibitem{26} V. T. S. Srinivas, J. S. Teja, R. Ruwayda, M. Yasaswini and L. R. R, "Deep Learning Technique Based Tomato Plant Health Monitoring System," 2023 IEEE 2nd International Conference on Industrial Electronics: Developments \& Applications (ICIDeA), Imphal, India, 2023, pp. 522-527. \url{https://doi.org/10.1109/ICIDeA59866.2023.10295250}
+
+%\bibitem{27}
+%H. Al-Hiary, S. Bani-Ahmad, “Fast and Accurate Detection and Classification of Tomato Leaf Diseases using Convolutional Neural Networks,” in *Proc. 2020 5th Int. Conf. Communication and Electronics Systems (ICCES)*, Coimbatore, India, 2020. doi:10.1109/ICCES48766.2020.
+%\url{https://link.springer.com/article/10.1007/s41348-021-00528-w}
+
+
+\end{thebibliography}
+
+
+\end{document}
