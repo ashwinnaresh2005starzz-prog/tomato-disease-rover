@@ -18,6 +18,10 @@ Three lightweight convolutional neural network architectures were evaluated for 
 - Background-class inclusion to improve robustness
 - Organized repository with notebook, assets, paper, and starter source files
 
+## Why This Project Matters
+
+Early identification of crop disease is important for reducing yield loss and improving field-level decision making. This project explores how a low-cost rover with on-device deep learning can support practical disease monitoring without depending on cloud inference.
+
 ## Project Snapshot
 
 ### Rover Prototype
