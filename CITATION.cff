@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+title: "Tomato Disease Rover"
+message: "If you use or reference this project, please cite it using the metadata below."
+type: software
+authors:
+  - family-names: "Aditya"
+    given-names: "S"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "Naresh"
+    given-names: "Ashwin M"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "Padmacharan"
+    given-names: "R"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "Shree Santh"
+    given-names: "B"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+  - family-names: "Akhil"
+    given-names: "V M"
+    affiliation: "Amrita School of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore, India"
+repository-code: "https://github.com/ashwinnaresh2005starzz-prog/tomato-disease-rover"
+license: "MIT"
+keywords:
+  - tomato leaf disease detection
+  - plant disease classification
+  - deep learning
+  - raspberry pi 5
+  - smart agriculture
+  - autonomous rover
+abstract: "A deep learning-based tomato leaf disease classification project deployed on a mobile robotic platform for real-time agricultural monitoring using Raspberry Pi 5 and lightweight convolutional neural networks."
+preferred-citation:
+  type: article
+  title: "A Convolutional Neural Network Approach for Real-Time Tomato Disease Classification on a Mobile Robotic Platform"
+  authors:
+    - family-names: "Aditya"
+      given-names: "S"
+    - family-names: "Naresh"
+      given-names: "Ashwin M"
+    - family-names: "Padmacharan"
+      given-names: "R"
+    - family-names: "Shree Santh"
+      given-names: "B"
+    - family-names: "Akhil"
+      given-names: "V M"
+  journal: "Project Paper"
+  year: 2026
